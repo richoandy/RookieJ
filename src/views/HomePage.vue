@@ -15,21 +15,29 @@
       <div class="row justify-content-center" style="margin-top:100px;margin-bottom:200px">
         <div class="form-group col-md-8">
           <label for="exampleInputEmail1" id="inputlabel"><strong>Input Your Name Here</strong></label>
-          <input v-model="username" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" @keyup="submit">
+          <input v-model="username" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <button class="btn btn-primary" type="submit" @click="addPlayer" style= "margin-top:10px">Go In</button>
         </div>
       </div>
     </div>
 </template>
 
 <script>
+import { roomsRef, gamesRef } from '@/firebase'
 export default {
   data () {
     return {
       username: ''
     }
   },
+  firebase: {
+    firebaseRoom: roomsRef,
+    firebaseGame: gamesRef
+  },
   methods: {
-    submit () {
+    addPlayer: function () {
+      roomsRef.push({player: this.username})
+      localStorage.setItem('key', this.username)
       this.$router.push('/rooms')
     }
   }
