@@ -2,15 +2,17 @@
   <div class="container jumbotron justify-content-center" id="body">
     <div class="row">
       <div class="col-md-8">
+        <h1>You are : {{ localplayer }} </h1>
+        <br>
         <h1>now playing : {{ firebaseGame[0].player}} vs {{ firebaseGame[1].player }} </h1>
         <h1>winner : {{  winner }}</h1>
         <br>
         <div>
           <div v-if="localplayer === firebaseGame[0].player">
-            <h1>{{ firebaseGame[0].player }} </h1> {{ p1input }}
-            <button @click="setInput('gunting', firebaseGame[4]['.key'])">Gunting</button>
-            <button @click="setInput('batu', firebaseGame[4]['.key'])">Batu</button>
-            <button @click="setInput('kertas', firebaseGame[4]['.key'])">Kertas</button>
+            {{ p1input }}
+            <img src="../assets/gunting.png" @click="setInput('gunting', firebaseGame[4]['.key'])"/>
+            <img src="../assets/batu.png" @click="setInput('batu', firebaseGame[4]['.key'])"/>
+            <img src="../assets/kertas.png" @click="setInput('kertas', firebaseGame[4]['.key'])"/>
             <p>{{ firebaseGame[0].janken }}</p>
           </div>
           <div v-if="localplayer === firebaseGame[1].player">
@@ -20,12 +22,13 @@
             <button @click="setInput('kertas', firebaseGame[5]['.key'])">Kertas</button>
             <p>{{ firebaseGame[1].janken  }}</p>
           </div>
+          <div v-if="localplayer !== firebaseGame[0].player">please wait for your turn ... </div>
           <br><br>
             <button v-if= "localplayer === winner" @click="nextGame">next game</button>
         </div>
       </div>
       <div class="col-md-4">
-        <h5>Antrian</h5>
+        <h5>Queue</h5>
         <ul v-for="(item,index) in firebaseRoom" :key="index">
           <li>{{item.player}}</li>
         </ul>
