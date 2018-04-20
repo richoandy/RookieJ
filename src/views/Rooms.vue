@@ -15,7 +15,7 @@
             <img id="image" src="../assets/kertas.png" @click="setInput('kertas', firebaseGame[4]['.key'])"/>
             <p>{{ firebaseGame[0].janken }}</p>
           </div>
-          <div>
+          <div v-if="localplayer === firebaseGame[1].player">
             <h1>{{ firebaseGame[1].player}}</h1> {{ P2input }}
             <img id="image" src="../assets/gunting.png" @click="setInput('gunting', firebaseGame[5]['.key'])" style="margin-right:30px"/>
             <img id="image" src="../assets/batu.png" @click="setInput('batu', firebaseGame[5]['.key'])" style="margin-right:30px"/>
