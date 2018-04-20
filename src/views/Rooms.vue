@@ -2,12 +2,9 @@
   <div class="container jumbotron justify-content-center" id="body">
     <div class="row">
       <div class="col-md-8">
-        {{ firebaseGame }}
+        <h1>now playing : {{ firebaseGame[0].player}} vs {{ firebaseGame[1].player }} </h1>
         <h1>winner : {{  winner }}</h1>
-        <input type="text" v-model="player">
-        <button type="submit" @click="startGame">Start</button>
         <br>
-        <button type="submit" @click="reset(firebaseGame[3]['.key'], firebaseGame[2]['.key'], firebaseGame[4]['.key'], firebaseGame[5]['.key'])">reset</button>
         <div>
           <div v-if="localplayer === firebaseGame[0].player">
             <h1>{{ firebaseGame[0].player }} </h1> {{ p1input }}
@@ -24,7 +21,7 @@
             <p>{{ firebaseGame[1].janken  }}</p>
           </div>
           <br><br>
-            <button v-if="winner !== '      '" @click="nextGame">next game</button>
+            <button v-if= "localplayer === winner" @click="nextGame">next game</button>
         </div>
       </div>
       <div class="col-md-4">
