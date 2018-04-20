@@ -1,7 +1,10 @@
 <template>
   <div id="app">
+<<<<<<< 37194fe037cc0ca01353fd0b17b1ea7c07c7f9a1
     <div id="nav">
     </div>
+=======
+>>>>>>> checkpoint
     <router-view/>
   </div>
 </template>
