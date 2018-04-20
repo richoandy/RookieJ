@@ -8,20 +8,26 @@
         <h1>winner : {{  winner }}</h1>
         <br>
         <div>
-          <div v-if="localplayer === firebaseGame[0].player">
-            {{ p1input }}
-            <img id="image" src="../assets/gunting.png" @click="setInput('gunting', firebaseGame[4]['.key'])" style="margin-right:30px"/>
-            <img id="image" src="../assets/batu.png" @click="setInput('batu', firebaseGame[4]['.key'])" style="margin-right:30px"/>
-            <img id="image" src="../assets/kertas.png" @click="setInput('kertas', firebaseGame[4]['.key'])"/>
-            <p>{{ firebaseGame[0].janken }}</p>
+          <div v-if="firebaseGame[0].player === '' & firebaseGame[1].player ==='' && firebaseRoom.length === 3">
+            <button @click="startJankenponTrain">start the jankenpon train</button>
           </div>
-          <div v-if="localplayer === firebaseGame[1].player">
-            <h1>{{ firebaseGame[1].player}}</h1> {{ P2input }}
-            <img id="image" src="../assets/gunting.png" @click="setInput('gunting', firebaseGame[5]['.key'])" style="margin-right:30px"/>
-            <img id="image" src="../assets/batu.png" @click="setInput('batu', firebaseGame[5]['.key'])" style="margin-right:30px"/>
-            <img id="image" src="../assets/kertas.png" @click="setInput('kertas', firebaseGame[5]['.key'])"/>
-            <p>{{ firebaseGame[1].janken  }}</p>
+          <div v-if="isPlayed === false && winner === 'seri'">
+            <div v-if="localplayer === firebaseGame[0].player">
+              {{ p1input }}
+              <img id="image" src="../assets/gunting.png" @click="setInput('gunting', firebaseGame[4]['.key'])" style="margin-right:30px"/>
+              <img id="image" src="../assets/batu.png" @click="setInput('batu', firebaseGame[4]['.key'])" style="margin-right:30px"/>
+              <img id="image" src="../assets/kertas.png" @click="setInput('kertas', firebaseGame[4]['.key'])"/>
+              <p>{{ firebaseGame[0].janken }}</p>
+            </div>
+            <div v-if="localplayer === firebaseGame[1].player">
+              <h1>{{ firebaseGame[1].player}}</h1> {{ P2input }}
+              <img id="image" src="../assets/gunting.png" @click="setInput('gunting', firebaseGame[5]['.key'])" style="margin-right:30px"/>
+              <img id="image" src="../assets/batu.png" @click="setInput('batu', firebaseGame[5]['.key'])" style="margin-right:30px"/>
+              <img id="image" src="../assets/kertas.png" @click="setInput('kertas', firebaseGame[5]['.key'])"/>
+              <p>{{ firebaseGame[1].janken  }}</p>
+            </div>
           </div>
+
           <div v-if="localplayer !== firebaseGame[0].player">please wait for your turn ... </div>
           <br><br>
             <button v-if= "localplayer === winner" @click="nextGame">next game</button>
@@ -43,6 +49,7 @@ import { roomsRef, gamesRef } from '@/firebase'
 export default {
   data () {
     return {
+      isPlayed: false,
       p1input: '',
       P2input: '',
       player: '',
@@ -55,6 +62,16 @@ export default {
     firebaseGame: gamesRef
   },
   methods: {
+    startJankenponTrain () {
+      gamesRef.child(this.firebaseGame[0]['.key']).update({
+        player: this.firebaseRoom[0].player
+      })
+      gamesRef.child(this.firebaseGame[1]['.key']).update({
+        player: this.firebaseRoom[1].player
+      })
+      roomsRef.child(this.firebaseRoom[1]['.key']).remove()
+      roomsRef.child(this.firebaseRoom[0]['.key']).remove()
+    },
     nextGame () {
       console.log('==============', this.loser)
       roomsRef.push({player: this.loser})
@@ -83,6 +100,7 @@ export default {
       gamesRef.child(key).update({
         janken: input
       })
+      this.isPlayed = true
     },
     startGame: function () {
       gamesRef.push({player: this.firebaseRoom[0].player})
